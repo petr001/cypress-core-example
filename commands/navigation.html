@@ -115,8 +115,7 @@ cy.reload(true)</code></pre>
         <div class="col-xs-12">
           <h4>cy.visit()</h4>
           <p>To visit a remote page, use the <a href="https://on.cypress.io/api/visit"><code>cy.visit()</code></a> command.</p>
-          <pre><code class="javascript">// Visit any url
-cy.visit('https://www.google.com')
+          <pre><code class="javascript">// Visit any sub-domain of your current domain
 
 // Pass options to the visit
 cy.visit('https://example.cypress.io/commands/navigation', {
@@ -127,11 +126,7 @@ cy.visit('https://example.cypress.io/commands/navigation', {
   onLoad: function(contentWindow){
     // contentWindow is the remote page's window object
   }
-})
-
-// serve your files. The path should be relative
-// to your project's root folder.
-cy.visit("index.17b23dff.html")</code></pre>
+})</code></pre>
         </div>
 
         <div class="col-xs-12"><hr></div>
@@ -143,6 +138,6 @@ cy.visit("index.17b23dff.html")</code></pre>
   <script src="/assets/js/vendor/jquery-1.12.0.min.cbb11b58.js"></script>
   <script src="/assets/js/vendor/bootstrap.min.c5b5b2fa.js"></script>
   <script src="/assets/js/vendor/highlight.pack.4cbe7783.js"></script>
-  <script src="/assets/js/scripts.295e6eb4.js"></script>
+  <script src="/assets/js/scripts.79548920.js"></script>
 </body>
 </html>
