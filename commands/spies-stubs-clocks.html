@@ -44,9 +44,10 @@
               <li><a href="/commands/aliasing">Aliasing</a></li>
               <li><a href="/commands/waiting">Waiting</a></li>
               <li><a href="/commands/network-requests">Network Requests</a></li>
-              <li><a href="/commands/files">Files</a></li>
+              <li><a href="/commands/fixtures">Fixtures</a></li>
               <li><a href="/commands/local-storage">Local Storage</a></li>
               <li><a href="/commands/cookies">Cookies</a></li>
+              <li><a href="/commands/spies-stubs-clocks">Spies, Stubs & Clocks</a></li>
               <li><a href="/commands/spies-stubs-clocks">Spies, Stubs & Clocks</a></li>
             </ul>
           </li>
@@ -68,70 +69,93 @@
 
   <div class="banner">
     <div class="container">
-      <h1>Aliasing</h1>
-      <p>Examples of referencing DOM elements or resources for later use in Cypress, for a full reference of commands, go to <a href="https://on.cypress.io/api" target="_blank">docs.cypress.io</a>
+      <h1>Spies, Stubs & Clocks</h1>
+      <p>Examples of using stubs, spies, and controlling clock time - for a full reference of commands, go to <a href="https://on.cypress.io/api" target="_blank">docs.cypress.io</a>
       </p>
     </div>
   </div>
   <div class="container content-container">
-    <div id="as">
+    <div id="spies-stubs-clocks">
       <div class="row">
 
+        <div class="col-xs-12">
+          <h4>cy.spy()</h4>
+          <p>To wrap a method in a spy, use the <a href="https://on.cypress.io/api/spy"><code>cy.spy()</code></a> command.</p>
+          <pre><code class="javascript">var obj = {
+  foo () {}
+}
+
+var spy = cy.spy(obj, "foo").as("anyArgs")
+
+obj.foo()
+
+expect(spy).to.be.called</code></pre>
+        </div>
+
+        <div class="col-xs-12"><hr></div>
+
+        <div class="col-xs-12">
+          <h4>cy.stub()</h4>
+          <p>To create a stub and/or replace a function with a stub, use the <a href="https://on.cypress.io/api/stub"><code>cy.stub()</code></a> command.</p>
+          <pre><code class="javascript">var obj = {
+  foo () {}
+}
+
+var stub = cy.stub(obj, "foo").as("foo")
+
+obj.foo("foo", "bar")
+
+expect(stub).to.be.called</code></pre>
+        </div>
+
+        <div class="col-xs-12"><hr></div>
+
         <div class="col-xs-7">
-          <h4>cy.as()</h4>
-          <p>To alias a route or DOM element for use later, use the <a href="https://on.cypress.io/api/as"><code>cy.as()</code></a> command.</p>
-          <pre><code class="javascript">// this is a good use case for an alias,
-// we don't want to write this long traversal again
+          <h4>cy.clock()</h4>
+          <p>To control time in the browser, use the <a href="https://on.cypress.io/api/clock"><code>cy.clock()</code></a> command.</p>
+          <pre><code class="javascript">var now = new Date(2017, 2, 14).getTime() // March 14, 2017 timestamp
+
 cy
-  .get('.as-table').find('tbody>tr')
-    .first().find('td').first().find('button').as('firstBtn')
-
-  // maybe do some more testing here...
-
-  // when we reference the alias, we place an
-  // @ in front of it's name
-  .get('@firstBtn').click()
-
-  .get('@firstBtn')
-    .should('have.class', 'btn-success')
-    .and('contain', 'Changed')</code></pre>
+  .clock(now)
+  .visit('https://example.cypress.io/commands/spies-stubs-clocks')
+  .get("#clock-div").click()
+    .contains("2017-03-14")</code></pre>
         </div>
         <div class="col-xs-5">
           <div class="well">
-            <table class="as-table table table-bordered">
-              <thead>
-                <tr>
-                  <th>Column 1</th>
-                  <th>Column 2</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    Row 1: Cell 1 <button class="btn btn-primary">Change</button>
-                  </td>
-                  <td>
-                    Row 1: Cell 2 <button class="btn btn-primary">Change</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Row 2: Cell 1 <button class="btn btn-primary">Change</button>
-                  </td>
-                  <td>
-                    Row 2: Cell 2 <button class="btn btn-primary">Change</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div id="clock-div">
+              Click for current time!
+            </div>
           </div>
         </div>
 
         <div class="col-xs-12"><hr></div>
+
+        <div class="col-xs-7">
+          <h4>cy.tick()</h4>
+          <p>To move time in the browser, use the <a href="https://on.cypress.io/api/tick"><code>cy.tick()</code></a> command.</p>
+          <pre><code class="javascript">var now = new Date(2017, 2, 14).getTime() // March 14, 2017 timestamp
+
+cy
+  .clock(now)
+  .visit('https://example.cypress.io/commands/spies-stubs-clocks')
+  .get("#clock-div").click()
+    .contains("2017-03-14T04:00:00.000Z")
+  .tick(10000) // 10 seconds passed
+  .get("#clock-div").click()
+    .contains("2017-03-14T04:00:10.000Z")</code></pre>
+        </div>
+        <div class="col-xs-5">
+          <div class="well">
+            <div id="tick-div">
+              Click for current time!
+            </div>
+          </div>
+        </div>
+        </div>
       </div>
     </div>
   </div>
-
 
   <script src="/assets/js/vendor/jquery-1.12.0.min.cbb11b58.js"></script>
   <script src="/assets/js/vendor/bootstrap.min.c5b5b2fa.js"></script>
